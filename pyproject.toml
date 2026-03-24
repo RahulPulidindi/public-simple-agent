@@ -12,6 +12,12 @@ dependencies = [
     "python-dotenv",
     "fastapi",
     "uvicorn[standard]",
+    "lancedb",
+    "tantivy",
+    "python-docx",
+    "openpyxl",
+    "networkx",
+    "langchain-text-splitters",
 ]
 
 [project.scripts]
@@ -26,6 +32,12 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["evals"]
+filterwarnings = [
+    "ignore::DeprecationWarning:lancedb",
+]
+markers = [
+    "slow: marks tests that make LLM API calls (deselect with '-m \"not slow\"')",
+]
 
 [build-system]
 requires = ["hatchling"]
