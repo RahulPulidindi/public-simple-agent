@@ -1,0 +1,41 @@
+name: Known-Item Retrieval
+description: User knows a document exists and wants to find it.
+
+cases:
+  - id: known_bom
+    query: "Find the Bill of Materials for the MC2 OXO system"
+    expected:
+      docs: ["BOM-055"]
+      first_tool: list_documents
+      answer_must_contain: ["BOM-055"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Returns BOM-055 as the primary result"
+      - "Identifies Rev G as the latest hardware BOM"
+      - "Distinguishes hardware BOM from software BOMs (BOM-079, BOM-101)"
+      - "Cites document source"
+
+  - id: known_510k
+    query: "Where is the 510(k) summary for the OXO device?"
+    expected:
+      docs: ["PLN-M02-061", "MEMO-M02-859"]
+      first_tool: search_documents
+      answer_must_contain: ["510"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Correctly states no standalone 510(k) summary document exists in the corpus"
+      - "Points to PLN-M02-061 (Regulatory Plan) or MEMO-M02-859 as relevant documents"
+      - "References K241567 clearance number if found in corpus"
+      - "Does not fabricate a document that does not exist"
+
+  - id: known_risk_assessment
+    query: "Find the risk assessment for MC2 OXO"
+    expected:
+      docs: ["RSK-M02-010"]
+      first_tool: search_documents
+      answer_must_contain: ["RSK"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Returns RSK-M02-010 or RSK-M02-013 as risk assessment documents"
+      - "Mentions the document type (DFMEA, URRA, etc.)"
+      - "Cites document source with revision"

@@ -1,0 +1,55 @@
+name: Enumeration & Counting
+description: User wants a definitive count or inventory of items.
+
+cases:
+  - id: count_ecrs
+    query: "How many engineering change requests are in the system?"
+    expected:
+      docs: ["ECR-577", "ECR-587", "ECR-593"]
+      first_tool: list_documents
+      exact_count: 3
+      answer_must_contain: ["3", "ECR-577", "ECR-587", "ECR-593"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Returns exactly 3 ECRs"
+      - "Lists all three by document ID"
+      - "Does not hallucinate additional ECRs"
+      - "Mentions status (signed/approved) for each"
+
+  - id: count_vvpr_status
+    query: "How many verification protocols have we completed vs. planned?"
+    expected:
+      docs: []
+      first_tool: list_documents
+      answer_must_contain: ["VVPR"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Correctly states all protocols are completed (current or signed)"
+      - "Does NOT confuse 'current' status with 'planned' or 'in progress'"
+      - "Provides the total count of VVPRs"
+      - "Explains that both current and signed mean completed/effective"
+
+  - id: count_total_docs
+    query: "How many documents are in the QMS?"
+    expected:
+      docs: []
+      first_tool: list_documents
+      answer_must_contain: []
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Reports total count including obsolete documents"
+      - "Breaks down by status (current, signed, obsolete)"
+      - "Uses list_documents with no type filter"
+
+  - id: count_3p
+    query: "How many third-party test reports do we have?"
+    expected:
+      docs: ["3P-M02-32", "3P-M02-33"]
+      first_tool: list_documents
+      exact_count: 2
+      answer_must_contain: ["2", "3P"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Returns exactly 2 third-party reports"
+      - "Lists both by ID and title"
+      - "Cites sources"

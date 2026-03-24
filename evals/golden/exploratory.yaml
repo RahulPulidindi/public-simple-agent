@@ -1,0 +1,41 @@
+name: Exploratory Search
+description: User wants to survey what's available on a topic.
+
+cases:
+  - id: explore_vvpr
+    query: "What verification test protocols do we have for the MC2 OXO?"
+    expected:
+      docs: []
+      first_tool: list_documents
+      answer_must_contain: ["VVPR"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses list_documents to enumerate all VVPRs"
+      - "Reports the total count of verification protocols"
+      - "Groups or categorizes the protocols logically"
+      - "Distinguishes between hardware, software, and third-party tests"
+
+  - id: explore_risk
+    query: "Show me all risk-related documents"
+    expected:
+      docs: ["RSK-M02-010", "RSK-M02-013", "RSK-M02-016", "RSK-M02-017", "RSK-M02-020"]
+      first_tool: list_documents
+      answer_must_contain: ["RSK"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses list_documents with doc_type RSK"
+      - "Lists all RSK documents with their titles"
+      - "Mentions obsolete vs current status for each"
+      - "Provides the total count"
+
+  - id: explore_plans
+    query: "What planning documents exist?"
+    expected:
+      docs: []
+      first_tool: list_documents
+      answer_must_contain: ["PLN"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses list_documents with doc_type PLN"
+      - "Lists planning documents with titles"
+      - "Reports count and statuses"

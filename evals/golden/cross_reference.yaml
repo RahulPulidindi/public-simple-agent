@@ -1,0 +1,46 @@
+name: Cross-Document Analysis
+description: Connecting information across the corpus via reference chains.
+
+cases:
+  - id: trace_leakage
+    query: "Trace the requirement for electrical leakage testing from the risk file through to the verification report"
+    expected:
+      docs: ["RSK-M02-013", "VVAM-M02-004", "3P-M02-33"]
+      first_tool: trace_references
+      max_tool_calls: 8
+      answer_must_contain: ["RSK-M02-013"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses trace_references as one of the first tool calls"
+      - "Identifies RSK-M02-013 as the risk source document"
+      - "Shows the reference chain through VVAM-M02-004 to 3P-M02-33 or 3P-M02-28"
+      - "Mentions IEC 60601-1 as the applicable standard"
+      - "Cites specific risk IDs (R0251 or R0254) or requirement IDs"
+      - "Every factual claim has a citation"
+
+  - id: map_3p_to_reqs
+    query: "Map all third-party test reports to the regulatory requirements they satisfy"
+    expected:
+      docs: ["3P-M02-32", "3P-M02-33"]
+      first_tool: list_documents
+      answer_must_contain: ["3P"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Lists all third-party reports"
+      - "For each report, identifies the regulatory standard it addresses"
+      - "Uses trace_references or get_document_content to find the connections"
+      - "Cites specific standards (IEC 60601-1-2, IEC 60601-1, etc.)"
+      - "Distinguishes EMC testing from electrical safety testing"
+
+  - id: trace_rsk_incoming
+    query: "What documents reference the risk assessment RSK-M02-010?"
+    expected:
+      docs: ["RSK-M02-010"]
+      first_tool: trace_references
+      answer_must_contain: ["RSK-M02-010"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses trace_references with direction incoming as the first call"
+      - "Lists the documents that reference RSK-M02-010"
+      - "Groups or categorizes the referencing documents"
+      - "Reports the count of referencing documents"

@@ -18,6 +18,7 @@ dependencies = [
     "openpyxl",
     "networkx",
     "langchain-text-splitters",
+    "pyyaml",
 ]
 
 [project.scripts]

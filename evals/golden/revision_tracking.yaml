@@ -1,0 +1,42 @@
+name: Revision & Change Tracking
+description: Understanding document history and changes between revisions.
+
+cases:
+  - id: rsk_rev_diff
+    query: "What changed between Rev A and Rev B of RSK-M02-017?"
+    expected:
+      docs: ["RSK-M02-017"]
+      first_tool: compare_revisions
+      answer_must_contain: ["RSK-M02-017"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses compare_revisions tool"
+      - "Identifies substantive content changes (not just formatting)"
+      - "Mentions specific additions or modifications between revisions"
+      - "Cites both revisions"
+
+  - id: ecr_dates
+    query: "Show me all ECRs filed in the last year and their status"
+    expected:
+      docs: ["ECR-577", "ECR-587", "ECR-593"]
+      first_tool: list_documents
+      answer_must_contain: ["ECR"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Lists all 3 ECRs"
+      - "Retrieves filing/approval dates from the documents"
+      - "Reports status for each (signed/approved)"
+      - "Cites sources for dates"
+
+  - id: bom_revisions
+    query: "What revisions exist for BOM-055?"
+    expected:
+      docs: ["BOM-055"]
+      first_tool: list_documents
+      answer_must_contain: ["BOM-055"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses list_documents with doc_id_prefix BOM-055"
+      - "Lists all revisions (E, F, G)"
+      - "Identifies which revision is the latest"
+      - "Mentions the ECR that drove each revision change if found"

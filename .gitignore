@@ -22,3 +22,9 @@ uv.lock
 
 # Node
 node_modules/
+
+# Data
+data/
+
+# Eval results (regenerated per run)
+evals/results/

@@ -56,7 +56,7 @@ def build_tools(engine: SearchEngine, ref_graph: ReferenceGraph) -> list:
     def list_documents(
         doc_type: Optional[str] = None,
         doc_id_prefix: Optional[str] = None,
-        include_obsolete: bool = False,
+        include_obsolete: bool = True,
     ) -> str:
         """List all documents matching filters. Returns a complete, exhaustive inventory.
 
@@ -64,10 +64,13 @@ def build_tools(engine: SearchEngine, ref_graph: ReferenceGraph) -> list:
         or finding all revisions of a document. Prefer this over search_documents
         when you need an exact count or complete list.
 
+        Results include obsolete documents by default (set include_obsolete=False
+        to exclude them). Obsolete documents are marked with (obsolete) in the output.
+
         Args:
             doc_type: Filter by type prefix (e.g., "ECR", "VVPR", "RSK", "PLN", "BOM", "MEMO").
             doc_id_prefix: Filter by document ID prefix (e.g., "BOM-055" to find all revisions).
-            include_obsolete: Whether to include obsolete documents (default False).
+            include_obsolete: Whether to include obsolete/superseded documents (default True).
         """
         results = engine.metadata_filter(
             doc_type=doc_type,

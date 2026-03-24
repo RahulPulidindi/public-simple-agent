@@ -1,0 +1,44 @@
+name: Compliance Cross-Reference
+description: Checking internal docs against regulatory requirements.
+
+cases:
+  - id: dhf_820_30
+    query: "Does our Design History File include everything required by FDA 21 CFR 820.30?"
+    expected:
+      docs: ["DHF-008", "PLN-M02-061"]
+      first_tool: search_documents
+      answer_must_contain: ["DHF"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Searches corpus for the company's regulatory plan BEFORE answering about 820.30"
+      - "Checks whether 21 CFR 820.30 is referenced in corpus documents"
+      - "Clearly distinguishes corpus-sourced facts from general training knowledge"
+      - "If using training knowledge about 820.30, explicitly labels it as such"
+      - "References DHF-008 as the design history file"
+      - "Identifies any gaps or incomplete items in the DHF"
+
+  - id: iso_13485
+    query: "Which of our documents follow ISO 13485:2016?"
+    expected:
+      docs: ["PLN-M02-037", "VVAM-M02-004", "RSK-M02-017"]
+      first_tool: search_documents
+      answer_must_contain: ["ISO 13485"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Searches for ISO 13485 in the corpus"
+      - "Lists documents that explicitly reference the standard"
+      - "Cites each document with revision"
+      - "Does not claim documents reference ISO 13485 without evidence from the corpus"
+
+  - id: vvpr_to_risk
+    query: "Which verification protocols trace back to the risk analysis?"
+    expected:
+      docs: ["RSK-M02-010"]
+      first_tool: trace_references
+      answer_must_contain: ["RSK"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Uses trace_references as the first tool call"
+      - "Identifies RSK-M02-010 as the primary risk assessment"
+      - "Lists specific VVPR documents that reference the risk assessment"
+      - "Distinguishes direct references from indirect connections"

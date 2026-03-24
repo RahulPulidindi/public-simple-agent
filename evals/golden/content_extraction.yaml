@@ -1,0 +1,45 @@
+name: Content Extraction & Synthesis
+description: Pulling specific information from documents and synthesizing across them.
+
+cases:
+  - id: acceptance_criteria_electrical
+    query: "What are the acceptance criteria for the electrical safety verification test?"
+    expected:
+      docs: ["3P-M02-33", "VVAM-M02-004"]
+      first_tool: search_documents
+      answer_must_contain: []
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Identifies that electrical safety is verified via third-party testing (Intertek)"
+      - "Provides specific numerical acceptance criteria (leakage current limits)"
+      - "References IEC 60601-1 as the applicable standard"
+      - "Cites 3P-M02-33 or VVAM-M02-004 as sources"
+      - "Mentions the test result (pass/fail)"
+
+  - id: open_action_items
+    query: "Summarize all design review action items that are still open"
+    expected:
+      docs: ["MEMO-M02-859", "MEMO-M02-773", "MEMO-M02-625", "MEMO-M02-663"]
+      first_tool: search_documents
+      answer_must_contain: []
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Reads the phase review documents to find action items"
+      - "Correctly identifies which items are truly open vs completed"
+      - "Mentions Phase 4 PQ report status if applicable"
+      - "Does not fabricate open items that do not exist"
+      - "Covers all phases, not just one"
+
+  - id: regulatory_strategy
+    query: "What is our regulatory strategy and compliance framework?"
+    expected:
+      docs: ["PLN-M02-061", "RSK-M02-017"]
+      first_tool: search_documents
+      answer_must_contain: ["510(k)"]
+      answer_must_not_contain: []
+    judge_criteria:
+      - "Identifies 510(k) as the regulatory pathway"
+      - "Lists applicable standards (IEC 60601, ISO 14971, etc.) from corpus documents"
+      - "Mentions the product code OXO and classification"
+      - "Cites PLN-M02-061 or RSK-M02-017 as sources"
+      - "Every standard cited comes from corpus documents, not training knowledge"
