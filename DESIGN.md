@@ -110,18 +110,22 @@ The agent makes multiple tool calls per query (avg 3.8, max 15). Without streami
 
 ## What I'd Do With More Time
 
-1. **Contextual chunking** — use the document's table of contents or section numbering to create hierarchically-aware chunks, where each chunk knows its position in the document structure.
+1. **Internet retrieval tool** — add a web search tool so the agent can look up external regulatory standards (FDA guidance documents, IEC standard text, PubMed) at query time rather than relying on training knowledge. Critical for compliance cross-reference queries where the user asks about a specific regulation.
 
-2. **Query classification** — a lightweight classifier that routes queries to the optimal tool before the LLM sees search results, reducing unnecessary tool calls.
+2. **Programmatic diff for revision comparison** — replace the current approach (dumping both revisions for the LLM to compare) with a structured diff that aligns sections between revisions and highlights additions, deletions, and modifications. The LLM would then summarize the diff rather than comparing raw text, improving accuracy and reducing token usage.
 
-3. **Reranking** — add a cross-encoder reranker after initial hybrid retrieval to improve precision on the top results.
+3. **Query classification** — a lightweight classifier (or few-shot prompt) that routes queries to the optimal tool before the main LLM sees search results. Would reduce unnecessary tool calls on traceability and enumeration queries where the agent sometimes picks the wrong tool first.
 
-4. **Incremental ingestion** — detect changed/added files and update only affected chunks and graph edges instead of rebuilding the entire index.
+4. **Automated eval in CI** — run the eval suite on every PR to catch search quality and tool routing regressions; alert on category-level score drops >0.1. Store results as artifacts for trend tracking. Important to run on prompt changes, model changes, and pipeline changes.
 
-5. **Graph-enhanced retrieval** — use the cross-reference graph to expand search results: if a VVPR is relevant, automatically surface the risk file it references.
+5. **Contextual chunking** — use the document's table of contents or section numbering to create hierarchically-aware chunks, where each chunk knows its position in the document structure.
 
-6. **Multi-revision awareness** — teach the agent to automatically prefer the latest non-obsolete revision unless the user specifically asks for a historical version.
+6. **Reranking** — add a cross-encoder reranker after initial hybrid retrieval to improve precision on the top results.
 
-7. **Semantic caching** — cache embedding results so re-ingestion of unchanged documents skips the embedding API call.
+7. **Incremental ingestion** — detect changed/added files and update only affected chunks and graph edges instead of rebuilding the entire index.
 
-8. **Citation verification** — post-process agent responses to verify that every `[DOC_ID Rev X]` citation actually matches content from the cited document.
+8. **Graph-enhanced retrieval** — use the cross-reference graph to expand search results: if a VVPR is relevant, automatically surface the risk file it references.
+
+9. **Multi-revision awareness** — teach the agent to automatically prefer the latest non-obsolete revision unless the user specifically asks for a historical version.
+
+10. **Citation verification** — post-process agent responses to verify that every `[DOC_ID Rev X]` citation actually matches content from the cited document.
